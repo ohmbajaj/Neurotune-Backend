@@ -46,6 +46,14 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+// Healthcheck endpoint
+app.get('/api/healthcheck', (req, res) => {
+  res.status(200).json({ 
+    status: 'alive',
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+  });
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/generate', generateRoutes);
